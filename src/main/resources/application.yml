@@ -1,0 +1,19 @@
+spring:
+  # Profile配置文件相关配置
+  profiles:
+    #激活Profile配置
+    active: dev
+
+  jackson:
+    #JSON结果中是否包含为null的属性的默认配置
+    default-property-inclusion: non_null
+
+# 配置Mybatis的XML文件的位置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  #忽略mapper映射中的驼峰命名法
+  configuration:
+    map-underscore-to-camel-case: true
+
+knife4j:
+  enable: true

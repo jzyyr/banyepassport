@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.csmallpassport.mapper.RoleMapper">
+
+    <sql id="ListQueryFields">
+        <if test="true">
+            id, name, description, sort
+        </if>
+    </sql>
+
+    <resultMap id="ListResultMap" type="cn.tedu.csmallpassport.pojo.vo.RoleListItemVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+
+
+    <select id="list" resultMap="ListResultMap">
+        SELECT
+        <include refid="ListQueryFields" />
+        FROM
+        ams_role
+        ORDER BY
+        sort DESC, id
+    </select>
+
+</mapper>

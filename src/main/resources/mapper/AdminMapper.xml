@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.csmallpassport.mapper.AdminMapper">
+    <resultMap id="BaseResultMap" type="cn.tedu.csmallpassport.pojo.entity.Admin">
+        <!--@mbg.generated-->
+        <!--@Table ams_admin-->
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="description" property="description"/>
+        <result column="enable" property="enable"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
+        <result column="login_count" property="loginCount"/>
+        <result column="gmt_last_login" property="gmtLastLogin"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+    <resultMap id="StandardResultMap" type="cn.tedu.csmallpassport.pojo.vo.AdminStandardVO">
+        <!--@mbg.generated-->
+        <!--@Table ams_admin-->
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="description" property="description"/>
+        <result column="enable" property="enable"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
+        <result column="login_count" property="loginCount"/>
+        <result column="gmt_last_login" property="gmtLastLogin"/>
+    </resultMap>
+    <resultMap id="ListResultMap" type="cn.tedu.csmallpassport.pojo.vo.AdminListVO">
+        <!--@mbg.generated-->
+        <!--@Table ams_admin-->
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="description" property="description"/>
+        <result column="enable" property="enable"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
+        <result column="login_count" property="loginCount"/>
+        <result column="gmt_last_login" property="gmtLastLogin"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, username, `password`, nickname, avatar, phone, email, description, `enable`,
+        last_login_ip, login_count, gmt_last_login, gmt_create, gmt_modified
+    </sql>
+
+
+    <!-- 当涉及1个多查询时，需要使用collection标签配置List集合类型的属性 -->
+    <!-- collection标签的property属性：类中List集合的属性的名称 -->
+    <!-- collection标签的ofType属性：类中List集合的元素类型的全限定名 -->
+    <!-- collection标签的子级：需要配置如何创建出一个个元素对象 -->
+    <!-- constructor标签：将通过构造方法来创建对象 -->
+    <!-- constructor标签子级的arg标签：配置构造方法的参数 -->
+    <resultMap id="LoginResultMap" type="cn.tedu.csmallpassport.pojo.vo.AdminLogInVO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="enable" property="enable"/>
+        <collection property="permissions" ofType="java.lang.String">
+            <constructor>
+                <arg column="value"/>
+            </constructor>
+        </collection>
+    </resultMap>
+
+
+    <select id="getLoginInfoByUsername" parameterType="java.lang.String" resultMap="LoginResultMap">
+        <!--@mbg.generated-->
+        select
+        ams_admin.id,
+        ams_admin.username,
+        ams_admin.enable,
+        ams_admin.password,
+        ams_permission.value
+        from ams_admin
+        left join ams_admin_role on ams_admin.id=ams_admin_role.admin_id
+        left join ams_role_permission on ams_admin_role.role_id=ams_role_permission.role_id
+        left join ams_permission on ams_role_permission.permission_id=ams_permission.id
+        where username=#{username}
+    </select>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="StandardResultMap">
+        <!--@mbg.generated-->
+        select
+        id, username, password, nickname, avatar, phone, email, description, enable, last_login_ip
+        from ams_admin
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete from ams_admin
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.tedu.csmallpassport.pojo.entity.Admin"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into ams_admin (username, `password`, nickname, avatar, phone, email, description,
+        `enable`, last_login_ip, login_count, gmt_last_login
+        )
+        values (#{username}, #{password}, #{nickname}, #{avatar}, #{phone}, #{email}, #{description},
+        #{enable}, #{lastLoginIp}, #{loginCount}, #{gmtLastLogin}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="cn.tedu.csmallpassport.pojo.entity.Admin" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into ams_admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="enable != null">
+                `enable`,
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip,
+            </if>
+            <if test="loginCount != null">
+                login_count,
+            </if>
+            <if test="gmtLastLogin != null">
+                gmt_last_login,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="nickname != null">
+                #{nickname},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="enable != null">
+                #{enable},
+            </if>
+            <if test="lastLoginIp != null">
+                #{lastLoginIp},
+            </if>
+            <if test="loginCount != null">
+                #{loginCount},
+            </if>
+            <if test="gmtLastLogin != null">
+                #{gmtLastLogin},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByIdSelective" parameterType="cn.tedu.csmallpassport.pojo.entity.Admin">
+        <!--@mbg.generated-->
+        update ams_admin
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="enable != null">
+                `enable` = #{enable},
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip = #{lastLoginIp},
+            </if>
+            <if test="loginCount != null">
+                login_count = #{loginCount},
+            </if>
+            <if test="gmtLastLogin != null">
+                gmt_last_login = #{gmtLastLogin},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <!-- int updateById(Admin admin); -->
+    <update id="updateById">
+        UPDATE ams_admin
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="password != null">
+                password=#{password},
+            </if>
+            <if test="nickname != null">
+                nickname=#{nickname},
+            </if>
+            <if test="avatar != null">
+                avatar=#{avatar},
+            </if>
+            <if test="phone != null">
+                phone=#{phone},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="enable != null">
+                enable=#{enable},
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip=#{lastLoginIp},
+            </if>
+            <if test="loginCount != null">
+                login_count=#{loginCount},
+            </if>
+            <if test="gmtLastLogin != null">
+                gmt_last_login=#{gmtLastLogin},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <update id="setEnable">
+        update ams_admin
+        set enable=1
+        where id = #{id}
+    </update>
+
+
+    <update id="setDisable">
+        update ams_admin
+        set enable=0
+        where id = #{id}
+    </update>
+
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update ams_admin
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="username = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.username}
+                </foreach>
+            </trim>
+            <trim prefix="`password` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.password}
+                </foreach>
+            </trim>
+            <trim prefix="nickname = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.nickname}
+                </foreach>
+            </trim>
+            <trim prefix="avatar = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.avatar}
+                </foreach>
+            </trim>
+            <trim prefix="phone = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.phone}
+                </foreach>
+            </trim>
+            <trim prefix="email = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.email}
+                </foreach>
+            </trim>
+            <trim prefix="description = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.description}
+                </foreach>
+            </trim>
+            <trim prefix="`enable` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.enable}
+                </foreach>
+            </trim>
+            <trim prefix="last_login_ip = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.lastLoginIp}
+                </foreach>
+            </trim>
+            <trim prefix="login_count = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.loginCount}
+                </foreach>
+            </trim>
+            <trim prefix="gmt_last_login = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.gmtLastLogin}
+                </foreach>
+            </trim>
+            <trim prefix="gmt_create = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.gmtCreate}
+                </foreach>
+            </trim>
+            <trim prefix="gmt_modified = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id} then #{item.gmtModified}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.id}
+        </foreach>
+    </update>
+
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into ams_admin
+        (username, `password`, nickname, avatar, phone, email, description, `enable`, last_login_ip,
+        login_count, gmt_last_login, gmt_create, gmt_modified)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.username}, #{item.password}, #{item.nickname}, #{item.avatar}, #{item.phone},
+            #{item.email}, #{item.description}, #{item.enable}, #{item.lastLoginIp}, #{item.loginCount},
+            #{item.gmtLastLogin}, #{item.gmtCreate}, #{item.gmtModified})
+        </foreach>
+    </insert>
+
+
+    <select id="countByUsername" resultType="int">
+        select COUNT(*)
+        from ams_admin
+        where username = #{username}
+    </select>
+
+    <select id="countByPhone" resultType="int">
+        select COUNT(*)
+        from ams_admin
+        where phone = #{phone}
+    </select>
+
+    <select id="countByEmail" resultType="int">
+        select COUNT(*)
+        from ams_admin
+        where email = #{email}
+    </select>
+
+    <select id="list" resultMap="ListResultMap">
+        select id,
+               username,
+               nickname,
+               avatar,
+               phone,
+               email,
+               description,
+               enable,
+               last_login_ip,
+               login_count,
+               gmt_last_login
+        from ams_admin
+        order by enable desc, id
+    </select>
+
+    <!--  &amp;lt;insert id="adminAddNewDTO"&amp;gt;-->
+    <!--    insert into ams_admin-->
+    <!--    (username, password, nickname, avatar, phone, email, description, enable)-->
+    <!--    values (#{username}, #{password}, #{nickname}, #{avatar}, #{phone}, #{email}, #{description},-->
+    <!--    #{enable})-->
+    <!--  &amp;lt;/insert&amp;gt;-->
+</mapper>

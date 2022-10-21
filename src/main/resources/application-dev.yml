@@ -1,0 +1,26 @@
+# 连接数据库的配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mall_ams?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+#服务端口
+server:
+  port: 9081
+
+# 日志的显示级别
+logging:
+  level:
+    cn.tedu.csmallpassport: trace
+
+
+#自定义配置
+csmall:
+  #jwt相关配置
+  jwt:
+    #签名算法中使用的盐
+    secret-Key: da13*(!ahw2i%^!ksb($*&!4&?>$)kas<@jpsa
+    #jwt的有效时长
+    duration-in-minute: 14400
+
